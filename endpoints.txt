@@ -1,0 +1,44 @@
+
+#Employee Endpoint	Description
+
+# NOTE:
+# Use only the URL path when making requests (e.g. /api/branches/...).
+# Do NOT include the HTTP method in the URL (e.g. avoid "GET /api/..." as a URL).
+
+GET	/api/employees/	List all employees
+POST	/api/employees/	Create an employee
+GET	/api/employees/<id>/	Retrieve one employee
+PUT	/api/employees/<id>/	Replace an employee
+PATCH	/api/employees/<id>/	Update part of an employee
+DELETE	/api/employees/<id>/	Delete an employee
+
+
+# Branch endpoints
+
+GET	/api/branches/	List all branches
+POST	/api/branches/	Create a branch
+GET	/api/branches/<uuid:id>/	Retrieve one branch
+PUT	/api/branches/<uuid:id>/	Replace a branch
+PATCH	/api/branches/<uuid:id>/	Update part of a branch
+DELETE	/api/branches/<uuid:id>/	Delete a branch
+GET	/api/branches/<uuid:id>/employees/	List employees in a branch
+GET	/api/branches/statistics/	Get branch statistics
+
+
+# Authentication endpoints
+
+POST    /api/auth/login/
+
+POST    /api/auth/logout/
+
+GET     /api/auth/me/
+
+PUT     /api/auth/profile/update/
+
+POST    /api/auth/change-password/
+
+POST    /api/auth/forgot-password/
+
+POST    /api/auth/reset-password/
+
+POST    /api/auth/refresh/
