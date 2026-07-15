@@ -9,6 +9,7 @@ from .views import (
     DepartmentListCreateAPIView,
     DepartmentDetailAPIView,
     DepartmentEmployeesAPIView,
+    branch_hr_dashboard,
 )
 
 urlpatterns = [
@@ -61,5 +62,8 @@ urlpatterns = [
     DepartmentEmployeesAPIView.as_view(),
     name="department-employees"
 ),
+
+    path("branchhrmanager/", branch_hr_dashboard, name="branch_hr_manager"),
+
 
 ]

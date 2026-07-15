@@ -7,6 +7,7 @@ SimpleJWT instead of model classes that do not exist.
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+from django.shortcuts import render
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -24,6 +25,10 @@ from .serializers import (
 
 
 User = get_user_model()
+
+
+def login_page(request):
+    return render(request, 'login.html')
 
 
 class LoginAPIView(APIView):

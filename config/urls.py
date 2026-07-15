@@ -17,7 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import redirect
-from my_app.views import home
+from my_app.views import home, branch_hr_dashboard, employee_dashboard
+from users import views as users_views
 
 
 def redirect_method_prefixed_api_path(request, subpath):
@@ -28,6 +29,9 @@ def redirect_method_prefixed_api_path(request, subpath):
 urlpatterns = [
     path('', home.as_view(), name='home'),
     path('admin/', admin.site.urls),
+    path('login/', users_views.login_page, name='login'),
+    path('branchhrmanager/', branch_hr_dashboard, name='branch_hr_manager'),
+    path('employeedash/', employee_dashboard, name='employee_dashboard'),
     path("api/auth/", include("users.urls")),
     path("api/", include("my_app.urls")),
     path("GET /api/<path:subpath>/", redirect_method_prefixed_api_path),

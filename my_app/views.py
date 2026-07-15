@@ -111,3 +111,15 @@ class home(APIView):
 
     def get(self, request):
         return render(request, 'genmanagerhr.html')
+    
+
+
+
+def branch_hr_dashboard(request):
+    return render(request, "branchhrmanager.html")
+
+
+def employee_dashboard(request):
+    return render(request, "employeedash.html")
+    
+

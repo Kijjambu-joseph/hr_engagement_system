@@ -14,6 +14,7 @@ from .views import (
 )
 
 urlpatterns = [
+    path("login", views.login_page, name="login-page"),
     path("login/", LoginAPIView.as_view(), name="login"),
     path("logout/", LogoutAPIView.as_view(), name="logout"),
     path("me/", CurrentUserAPIView.as_view(), name="current-user"),
