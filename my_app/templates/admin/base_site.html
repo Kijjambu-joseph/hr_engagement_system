@@ -1,0 +1,12 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ site_title|default:_('HR Engagement System Admin') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+  <a href="{% url 'admin:index' %}">HR Engagement System</a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

@@ -14,10 +14,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import redirect
 from my_app.views import branch_hr_dashboard, employee_dashboard, genmanagerdash
+from my_app.admin_site import hr_admin_site
 from users import views as users_views
 
 
@@ -27,8 +27,8 @@ def redirect_method_prefixed_api_path(request, subpath):
 
 
 urlpatterns = [
-    path('', genmanagerdash, name='home'),
-    path('admin/', admin.site.urls),
+    path('', users_views.login_page, name='home'),
+    path('admin/', hr_admin_site.urls),
     path('login/', users_views.login_page, name='login'),
     path('branchhrmanager/', branch_hr_dashboard, name='branch_hr_manager'),
     path('employeedash/', employee_dashboard, name='employee_dashboard'),

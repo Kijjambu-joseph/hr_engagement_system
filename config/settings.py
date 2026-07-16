@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -61,7 +62,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -136,3 +137,100 @@ REST_FRAMEWORK = {
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+JAZZMIN_SETTINGS = {
+    'site_title': 'HR Engagement System',
+    'site_header': 'HR Engagement System',
+    'site_brand': 'HR Engagement System',
+    'welcome_sign': 'Administrative Command Center',
+    'site_logo': 'image/cente-removebg-preview.png',
+    'site_logo_classes': 'img-circle elevation-3',
+    'site_icon': 'fas fa-building',
+    'copyright': 'HR Engagement System',
+    'search_model': 'my_app.Employee',
+    'user_avatar': None,
+    'topmenu_links': [
+        {'name': 'Dashboard', 'url': 'admin:index', 'permissions': ['auth.view_user']},
+        {'name': 'Visit App Home', 'url': 'home', 'new_window': False},
+    ],
+    'usermenu_links': [
+        {'name': 'View Site', 'url': 'home', 'new_window': False},
+        {'model': 'users.bankuser'},
+    ],
+    'show_sidebar': True,
+    'navigation_expanded': True,
+    'hide_apps': [],
+    'hide_models': [],
+    'order_with_respect_to': [
+        'my_app.Attendance',
+        'my_app.Complaint',
+        'my_app.LeaveRequest',
+        'my_app.PerformanceReview',
+        'my_app.Suggestion',
+        'my_app.Employee',
+        'my_app.EmployeeDocument',
+        'my_app.JobTitle',
+        'my_app.EmploymentType',
+        'my_app.Branch',
+        'my_app.Department',
+        'my_app.Survey',
+        'my_app.SurveyQuestion',
+        'my_app.SurveyResponse',
+        'my_app.Announcement',
+        'my_app.Notification',
+        'users.BankUser',
+        'auth.Group',
+        'my_app.AuditLog',
+    ],
+    'icons': {
+        'my_app.Attendance': 'fas fa-calendar-check',
+        'my_app.Complaint': 'fas fa-triangle-exclamation',
+        'my_app.LeaveType': 'fas fa-layer-group',
+        'my_app.LeaveRequest': 'fas fa-calendar-minus',
+        'my_app.PerformanceReview': 'fas fa-chart-line',
+        'my_app.Suggestion': 'fas fa-lightbulb',
+        'my_app.Announcement': 'fas fa-bullhorn',
+        'my_app.Notification': 'fas fa-bell',
+        'my_app.Employee': 'fas fa-users',
+        'my_app.EmployeeDocument': 'fas fa-folder-open',
+        'my_app.JobTitle': 'fas fa-id-badge',
+        'my_app.EmploymentType': 'fas fa-briefcase',
+        'my_app.Branch': 'fas fa-code-branch',
+        'my_app.Department': 'fas fa-sitemap',
+        'my_app.Survey': 'fas fa-square-poll-horizontal',
+        'my_app.SurveyQuestion': 'fas fa-circle-question',
+        'my_app.SurveyResponse': 'fas fa-comments',
+        'my_app.Recognition': 'fas fa-award',
+        'users.BankUser': 'fas fa-user-shield',
+        'auth.Group': 'fas fa-user-tag',
+        'my_app.AuditLog': 'fas fa-shield-halved',
+    },
+    'default_icon_parents': 'fas fa-folder-tree',
+    'related_modal_active': True,
+    'show_ui_builder': False,
+}
+
+JAZZMIN_UI_TWEAKS = {
+    'navbar_small_text': False,
+    'footer_small_text': False,
+    'body_small_text': False,
+    'brand_small_text': False,
+    'brand_colour': 'navbar-primary',
+    'accent': 'accent-primary',
+    'navbar': 'navbar-white navbar-light',
+    'no_navbar_border': False,
+    'sidebar': 'sidebar-dark-primary',
+    'sidebar_nav_small_text': False,
+    'sidebar_disable_expand': False,
+    'sidebar_nav_child_indent': True,
+    'theme': 'default',
+    'dark_mode_theme': 'cyborg',
+    'button_classes': {
+        'primary': 'btn-primary',
+        'secondary': 'btn-outline-secondary',
+        'info': 'btn-info',
+        'warning': 'btn-warning',
+        'danger': 'btn-danger',
+        'success': 'btn-success',
+    },
+}
