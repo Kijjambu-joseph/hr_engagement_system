@@ -45,9 +45,14 @@
         font-weight: 600;
       }
 
-      .navbar {
-        background: #0d6efd;
-      }
+      .navbar{
+            background:#236CB5;
+        }
+
+        .navbar-brand {
+          color: #fff ;
+        }
+
 
       .navbar-actions {
         display: flex;
@@ -76,7 +81,8 @@
 
       .sidebar {
         min-height: 100vh;
-        background: #0d6efd;
+        width: 15vw;
+        background: #236CB5;
       }
 
       .sidebar a {
@@ -186,6 +192,62 @@
         padding: 1.25rem;
       }
 
+      .chart-card {
+        background: #fff;
+        border: 1px solid #e6eef6;
+        border-radius: 1rem;
+        box-shadow: var(--shadow);
+        padding: 1.25rem;
+        height: 100%;
+      }
+
+      .chart-card-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .chart-card-title {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+      }
+
+      .chart-card-subtitle {
+        margin: 0.25rem 0 0;
+        font-size: 0.875rem;
+        color: #6b7280;
+      }
+
+      .chart-badge {
+        background: #eff6ff;
+        color: #1d4ed8;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        padding: 0.45rem 0.75rem;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      .chart-canvas-wrap {
+        position: relative;
+        width: 100%;
+        min-height: 300px;
+      }
+
+      .chart-canvas-wrap.tall {
+        min-height: 340px;
+      }
+
+      .chart-canvas-wrap.short {
+        min-height: 280px;
+      }
+
       .section-title {
         font-size: 1.05rem;
         font-weight: 700;
@@ -276,7 +338,7 @@
   <body>
 
     {% load static %}
-    <nav class="navbar navbar-dark bg-primary shadow">
+    <nav class="navbar">
       <div class="container-fluid">
         <span class="navbar-brand">
 
@@ -285,7 +347,7 @@
           HR Engagement system
         </span>
 
-        <div class="navbar-actions text-white">
+        <div class="navbar">
           <div class="dropdown">
             <button class="avatar-toggle dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account menu">
               <img
@@ -331,7 +393,7 @@
 
           <!-- <a href="#"><i class="bi bi-megaphone"></i> Announcements</a> -->
 
-          <a href="#"><i class="bi bi-ui-checks-grid"></i> Surveys</a>
+          <!-- <a href="#"><i class="bi bi-ui-checks-grid"></i> Surveys</a> -->
 
           <a href="#"><i class="bi bi-chat-left-dots"></i> Complaints</a>
 
@@ -347,7 +409,7 @@
 
             <div class="row g-4">
 
-              <div class="col-xl-2 col-lg-4 col-md-6">
+              <div class="col-xl-4 col-lg-6 col-md-6">
                 <div class="card metric-card h-100">
                   <div>
                     <h6>Total Open Cases</h6>
@@ -359,7 +421,7 @@
                 </div>
               </div>
 
-              <div class="col-xl-2 col-lg-4 col-md-6">
+              <!-- <div class="col-xl-4 col-lg-6 col-md-6">
                 <div class="card metric-card h-100">
                   <div>
                     <h6>HRBP SLA Velocity</h6>
@@ -369,9 +431,9 @@
                     <i class="bi bi-speedometer2"></i>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
-              <div class="col-xl-2 col-lg-4 col-md-6">
+              <div class="col-xl-4 col-lg-6 col-md-6">
                 <div class="card metric-card h-100">
                   <div>
                     <h6>Pending Approvals</h6>
@@ -383,7 +445,7 @@
                 </div>
               </div>
 
-              <div class="col-xl-2 col-lg-4 col-md-6">
+              <div class="col-xl-4 col-lg-6 col-md-6">
                 <div class="card metric-card h-100">
                   <div>
                     <h6>SLA Breach Risk</h6>
@@ -397,7 +459,7 @@
 
 
 
-              <div class="col-xl-2 col-lg-4 col-md-6">
+              <div class="col-xl-4 col-lg-6 col-md-6">
                 <div class="card metric-card h-100">
                   <div>
                     <h6>Active HRBPs</h6>
@@ -405,6 +467,38 @@
                   </div>
                   <div class="metric-icon metric-icon-emerald">
                     <i class="bi bi-people-fill"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-4 g-4">
+              <div class="col-xl-4 col-lg-5">
+                <div class="chart-card">
+                  <div class="chart-card-header">
+                    <div>
+                      <h5 class="chart-card-title">SLA Breach Risk</h5>
+                      <p class="chart-card-subtitle">2 of 34 open cases are time-sensitive.</p>
+                    </div>
+                    <span class="chart-badge">Risk Focus</span>
+                  </div>
+                  <div class="chart-canvas-wrap short">
+                    <canvas id="slaBreachChart"></canvas>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-8 col-lg-7">
+                <div class="chart-card">
+                  <div class="chart-card-header">
+                    <div>
+                      <h5 class="chart-card-title">Escalations by Origin Branch</h5>
+                      <p class="chart-card-subtitle">Branches ranked from highest to lowest case volume.</p>
+                    </div>
+                    <span class="chart-badge">Branch Volume</span>
+                  </div>
+                  <div class="chart-canvas-wrap tall">
+                    <canvas id="originBranchChart"></canvas>
                   </div>
                 </div>
               </div>
@@ -498,10 +592,11 @@
                     Initiate Pulse Survey
                   </button>
 
-                  <div class="feed-panel mt-4 p-3">
-                    <div class="section-title">Systemic Risk Spotlights</div>
 
-                    <div class="feed-item">
+                  <!-- <div class="feed-panel mt-4 p-3">
+                    <div class="section-title">Systemic Risk Spotlights</div> -->
+
+                    <!-- <div class="feed-item">
                       <strong>Loans Department</strong><br />
                       Complaint index has exceeded executive monitoring threshold.
                     </div>
@@ -510,7 +605,9 @@
                       <strong>Tech Operations</strong><br />
                       Infrastructure tool suggestions require executive funding
                       review.
-                    </div>
+                    </div> -->
+                    
+
                   </div>
                 </div>
               </div>
@@ -580,6 +677,7 @@
               <label class="form-check-label" for="encryptSwitch">
                 Strict enforcement of anonymous metadata encryption scrubbing
               </label>
+
             </div>
           </div>
         </div>
@@ -617,8 +715,132 @@
       </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+      const chartColors = {
+        navy: '#12355b',
+        blue: '#2563eb',
+        sky: '#38bdf8',
+        teal: '#14b8a6',
+        amber: '#f59e0b',
+        red: '#dc2626',
+        rose: '#f43f5e',
+        slate: '#64748b',
+        lightBlue: '#dbeafe',
+      };
+
+      const sharedChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+          duration: 900,
+          easing: 'easeOutQuart',
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: '#334155',
+              boxWidth: 12,
+              boxHeight: 12,
+              usePointStyle: true,
+              pointStyle: 'circle',
+            },
+          },
+          tooltip: {
+            backgroundColor: 'rgba(15, 23, 42, 0.96)',
+            padding: 12,
+            titleColor: '#fff',
+            bodyColor: '#e2e8f0',
+            displayColors: true,
+          },
+        },
+        scales: {
+          x: {
+            grid: {
+              color: 'rgba(148, 163, 184, 0.15)',
+            },
+            ticks: {
+              color: '#475569',
+            },
+          },
+          y: {
+            grid: {
+              color: 'rgba(148, 163, 184, 0.15)',
+            },
+            ticks: {
+              color: '#475569',
+            },
+          },
+        },
+      };
+
+      new Chart(document.getElementById('slaBreachChart'), {
+        type: 'doughnut',
+        data: {
+          labels: ['SLA Breach Risk Cases', 'Other Open Cases'],
+          datasets: [{
+            data: [2, 32],
+            backgroundColor: [chartColors.red, chartColors.lightBlue],
+            borderColor: '#ffffff',
+            borderWidth: 2,
+            hoverOffset: 6,
+            cutout: '68%',
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: '#334155',
+                boxWidth: 12,
+                usePointStyle: true,
+                pointStyle: 'circle',
+              },
+            },
+            tooltip: {
+              backgroundColor: 'rgba(15, 23, 42, 0.96)',
+              padding: 12,
+            },
+          },
+        },
+      });
+
+      new Chart(document.getElementById('originBranchChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Kampala HQ', 'Gulu Branch', 'Tech Operations', 'Mbarara Branch'],
+          datasets: [{
+            label: 'Cases',
+            data: [14, 9, 7, 4],
+            borderRadius: 10,
+            backgroundColor: [chartColors.navy, chartColors.blue, chartColors.sky, chartColors.teal],
+          }],
+        },
+        options: {
+          ...sharedChartOptions,
+          plugins: {
+            ...sharedChartOptions.plugins,
+            legend: { display: false },
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { color: '#475569' },
+            },
+            y: {
+              beginAtZero: true,
+              suggestedMax: 16,
+              grid: { color: 'rgba(148, 163, 184, 0.15)' },
+              ticks: { color: '#475569' },
+            },
+          },
+        },
+      });
+
       const logoutButton = document.getElementById('logoutButton');
 
       if (logoutButton) {
