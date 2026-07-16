@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Gen Manager HR Dashboard</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg: #f4f6f9;
+        --nav: #0f172a;
+        --primary: #2563eb;
+        --text: #333333;
+        --radius: 12px;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        --shadow-hover: 0 10px 24px rgba(0, 0, 0, 0.1);
+        --green: #198754;
+        --amber: #f59e0b;
+        --red: #dc3545;
+        --cyan: #0dcaf0;
+      }
+
+      body {
+        background: var(--bg);
+        font-family: "Segoe UI", system-ui, sans-serif;
+        color: var(--text);
+      }
+
+      h6 {
+        font-weight: 600;
+      }
+
+      .navbar {
+        background: #0d6efd;
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .avatar-toggle {
+        border: 0;
+        background: transparent;
+        padding: 0;
+      }
+
+      .avatar-placeholder {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        object-fit: cover;
+        background: #fff;
+      }
+
+      .dropdown-menu {
+        min-width: 220px;
+      }
+
+      .sidebar {
+        min-height: 100vh;
+        background: #0d6efd;
+      }
+
+      .sidebar a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 14px 20px;
+        transition: 0.3s;
+      }
+
+      .sidebar a:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .card,
+      .control-panel,
+      .feed-panel {
+        border: none;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        transition: 0.25s ease;
+      }
+
+      .card:hover,
+      .control-panel:hover,
+      .feed-panel:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-hover);
+      }
+
+      .metric-card {
+        background: #ffffff;
+        border: 1px solid #e6eef6;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        transition: all 200ms ease;
+        position: relative;
+        min-height: 132px;
+      }
+
+      .metric-title {
+        font-size: 0.75rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #6b7280;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .metric-value {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+      }
+
+      .metric-sub {
+        font-size: 0.8125rem;
+        color: #9ca3af;
+        margin-top: 0.75rem;
+      }
+
+      .metric-icon {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-size: 1.75rem;
+      }
+
+      .metric-icon-red {
+        background: #fef2f2;
+        color: #dc2626;
+      }
+
+      .metric-icon-blue {
+        background: #eff6ff;
+        color: #2563eb;
+      }
+
+      .metric-icon-amber {
+        background: #fffbeb;
+        color: #d97706;
+      }
+
+      .metric-icon-emerald {
+        background: #ecfdf5;
+        color: #10b981;
+      }
+
+      .metric-icon-slate {
+        background: #f8fafc;
+        color: #64748b;
+      }
+
+      .table-container,
+      .control-panel {
+        background: #fff;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 1.25rem;
+      }
+
+      .section-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+      }
+
+      .table thead {
+        background: #eef3f9;
+      }
+
+      .table td,
+      .table th {
+        vertical-align: middle;
+      }
+
+      .case-link {
+        color: var(--primary);
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .case-link:hover {
+        text-decoration: underline;
+      }
+
+      .action-btn {
+        width: 100%;
+        margin-bottom: 12px;
+        padding: 12px;
+        font-weight: 600;
+      }
+
+      .feed-item {
+        border-left: 5px solid #dc3545;
+        background: #fff6f6;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 12px;
+      }
+
+      .feed-item.info {
+        border-left-color: #0dcaf0;
+        background: #eefcff;
+      }
+
+      .modal-content {
+        border-radius: 14px;
+        border: none;
+      }
+
+      .summary-card {
+        background: #f4f6f9;
+        border-radius: 12px;
+        padding: 20px;
+      }
+
+      @media (max-width: 991px) {
+        .metric-card {
+          min-height: 120px;
+          padding: 1.25rem;
+        }
+
+        .metric-value {
+          font-size: 1.6rem;
+        }
+
+        .action-btn {
+          margin-bottom: 10px;
+        }
+
+        .metric-icon {
+          top: 1.25rem;
+          right: 1.25rem;
+          width: 48px;
+          height: 48px;
+          font-size: 1.45rem;
+        }
+      }
+
+      @media (max-width: 575px) {
+        .metric-card {
+          min-height: 112px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+
+    {% load static %}
+    <nav class="navbar navbar-dark bg-primary shadow">
+      <div class="container-fluid">
+        <span class="navbar-brand">
+
+          <!-- <i class="bi bi-bank2"></i> -->
+
+          HR Engagement system
+        </span>
+
+        <div class="navbar-actions text-white">
+          <div class="dropdown">
+            <button class="avatar-toggle dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account menu">
+              <img
+                class="avatar-placeholder"
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%23ffffff'/%3E%3Ccircle cx='32' cy='24' r='10' fill='%23cfd8dc'/%3E%3Cpath d='M16 52c3.9-9.5 12-14 16-14s12.1 4.5 16 14' fill='%23cfd8dc'/%3E%3C/svg%3E"
+                alt="Account avatar"
+              />
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+              <li><h6 class="dropdown-header">Gen Manager HR</h6></li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <button
+                  class="dropdown-item text-danger"
+                  type="button"
+                  id="logoutButton"
+                  data-logout-url="{% url 'logout' %}"
+                >
+                  <i class="bi bi-box-arrow-right me-2"></i>
+                  Logout
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-2 sidebar p-0">
+
+          <img src="{% static 'image/cente-removebg-preview.png' %}" alt="centenary-bank-logo" class="img-fluid mx-auto d-block mt-4 mb-4" style="max-width: 50%;">
+
+          <a href="#"><i class="bi bi-speedometer2"></i> Dashboard</a>
+
+          <a href="#"><i class="bi bi-people"></i> Suggestions</a>
+
+          <a href="#"><i class="bi bi-calendar-check"></i> HRBP Escalation pipeline</a>
+
+          <a href="#"><i class="bi bi-calendar-event"></i> pulse survey and Feedback</a>
+
+          <!-- <a href="#"><i class="bi bi-megaphone"></i> Announcements</a> -->
+
+          <a href="#"><i class="bi bi-ui-checks-grid"></i> Surveys</a>
+
+          <a href="#"><i class="bi bi-chat-left-dots"></i> Complaints</a>
+
+          <a href="#"><i class="bi bi-lightbulb"></i> Suggestions</a>
+
+          <a href="#"><i class="bi bi-gear"></i> Analytics and Report</a>
+        </div>
+
+        <div class="col-lg-10">
+          <div class="container-fluid py-4">
+            
+                <!-- cards -->
+
+            <div class="row g-4">
+
+              <div class="col-xl-2 col-lg-4 col-md-6">
+                <div class="card metric-card h-100">
+                  <div>
+                    <h6>Total Open Cases</h6>
+                    <div class="metric-value">34</div>
+                  </div>
+                  <div class="metric-icon metric-icon-red">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-2 col-lg-4 col-md-6">
+                <div class="card metric-card h-100">
+                  <div>
+                    <h6>HRBP SLA Velocity</h6>
+                    <div class="metric-value">42</div>
+                  </div>
+                  <div class="metric-icon metric-icon-amber">
+                    <i class="bi bi-speedometer2"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-2 col-lg-4 col-md-6">
+                <div class="card metric-card h-100">
+                  <div>
+                    <h6>Pending Approvals</h6>
+                    <div class="metric-value">7</div>
+                  </div>
+                  <div class="metric-icon metric-icon-blue">
+                    <i class="bi bi-folder2-open"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-2 col-lg-4 col-md-6">
+                <div class="card metric-card h-100">
+                  <div>
+                    <h6>SLA Breach Risk</h6>
+                    <div class="metric-value">2</div>
+                  </div>
+                  <div class="metric-icon metric-icon-red">
+                    <i class="bi bi-clock-history"></i>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="col-xl-2 col-lg-4 col-md-6">
+                <div class="card metric-card h-100">
+                  <div>
+                    <h6>Active HRBPs</h6>
+                    <div class="metric-value">6</div>
+                  </div>
+                  <div class="metric-icon metric-icon-emerald">
+                    <i class="bi bi-people-fill"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-4 g-4">
+              <div class="col-lg-9">
+                <div class="table-container">
+                  <div class="section-title">Executive Escalation Pipeline Log</div>
+
+                  <div class="table-responsive">
+                    <table class="table align-middle">
+                      <thead>
+                        <tr>
+                          <th>Case ID</th>
+                          <th>Origin Branch</th>
+                          <th>Assigned HRBP</th>
+                          <th>Urgency Status</th>
+                          <th>Escalation Factor</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <tr>
+                          <td><a href="#" class="case-link">#CMP-402</a></td>
+                          <td>Kampala HQ</td>
+                          <td>Sarah Namara</td>
+                          <td><span class="badge bg-danger">Critical</span></td>
+                          <td>Compliance Violation</td>
+                        </tr>
+
+                        <tr>
+                          <td><a href="#" class="case-link">#SUG-881</a></td>
+                          <td>Tech Operations</td>
+                          <td>Brian Ojara</td>
+                          <td>
+                            <span class="badge bg-warning text-dark">Pending</span>
+                          </td>
+                          <td>Technology Funding Suggestion</td>
+                        </tr>
+
+                        <tr>
+                          <td><a href="#" class="case-link">#EMP-217</a></td>
+                          <td>Gulu Branch</td>
+                          <td>Grace Atuhaire</td>
+                          <td><span class="badge bg-primary">Normal</span></td>
+                          <td>Employee Relations</td>
+                        </tr>
+
+                        <tr>
+                          <td><a href="#" class="case-link">#CMP-317</a></td>
+                          <td>Mbarara Branch</td>
+                          <td>David Okello</td>
+                          <td><span class="badge bg-danger">Urgent</span></td>
+                          <td>Cash Tier Override</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-3">
+                <div class="control-panel">
+                  <div class="section-title">Executive Operational Controls</div>
+
+                  <button
+                    class="btn btn-success action-btn"
+                    data-bs-toggle="modal"
+                    data-bs-target="#queueModal"
+                  >
+                    <i class="fa-solid fa-triangle-exclamation me-2"></i>
+                    Review Escalations Queue
+                  </button>
+
+                  <button
+                    class="btn btn-primary action-btn"
+                    data-bs-toggle="modal"
+                    data-bs-target="#reportModal"
+                  >
+                    <i class="fa-solid fa-chart-column me-2"></i>
+                    Generate Board Report
+                  </button>
+
+                  <button
+                    class="btn btn-info text-white action-btn"
+                    data-bs-toggle="modal"
+                    data-bs-target="#surveyModal"
+                  >
+                    <i class="fa-solid fa-square-poll-horizontal me-2"></i>
+                    Initiate Pulse Survey
+                  </button>
+
+                  <div class="feed-panel mt-4 p-3">
+                    <div class="section-title">Systemic Risk Spotlights</div>
+
+                    <div class="feed-item">
+                      <strong>Loans Department</strong><br />
+                      Complaint index has exceeded executive monitoring threshold.
+                    </div>
+
+                    <div class="feed-item info">
+                      <strong>Tech Operations</strong><br />
+                      Infrastructure tool suggestions require executive funding
+                      review.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal fade" id="queueModal" tabindex="-1">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Escalations Queue</h5>
+            <button class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="summary-card">
+              <h5 class="mb-3">High Priority Executive Complaint</h5>
+
+              <p><strong>Branch:</strong> Mbarara Branch</p>
+
+              <p><strong>Category:</strong> Cash-tier Override Violation</p>
+
+              <p><strong>Priority:</strong> Critical Executive Review</p>
+
+              <p>
+                Immediate intervention recommended due to repeated policy
+                override complaints affecting operational governance.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="reportModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Board Report Pack</h5>
+            <button class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Reporting Quarter</label>
+
+              <select class="form-select">
+                <option>Q1</option>
+                <option>Q2</option>
+                <option selected>Q3</option>
+                <option>Q4</option>
+              </select>
+            </div>
+
+            <div class="form-check form-switch">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="encryptSwitch"
+                checked
+              />
+
+              <label class="form-check-label" for="encryptSwitch">
+                Strict enforcement of anonymous metadata encryption scrubbing
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="surveyModal" tabindex="-1">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Pulse Survey Distribution</h5>
+            <button class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label"> Distribution Scope </label>
+
+              <select class="form-select">
+                <option>All Employees</option>
+                <option>Regional Branches</option>
+                <option>HR Business Partners</option>
+                <option>Executive Leadership</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label"> Survey Message </label>
+
+              <textarea class="form-control" rows="8">Current pulse survey focuses on staff satisfaction with workplace technology, HR systems accessibility, digital collaboration tools, self-service platforms, IT response times, operational efficiency, and overall employee experience.</textarea
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const logoutButton = document.getElementById('logoutButton');
+
+      if (logoutButton) {
+        logoutButton.addEventListener('click', async () => {
+          const logoutUrl = logoutButton.dataset.logoutUrl;
+          const accessToken = localStorage.getItem('access') || sessionStorage.getItem('access');
+
+          const headers = {
+            'Content-Type': 'application/json',
+          };
+
+          if (accessToken) {
+            headers.Authorization = `Bearer ${accessToken}`;
+          }
+
+          try {
+            await fetch(logoutUrl, {
+              method: 'POST',
+              headers,
+              credentials: 'same-origin',
+              body: JSON.stringify({}),
+            });
+          } catch (error) {
+            console.warn('Logout request failed, clearing local auth state anyway.', error);
+          }
+
+          ['access', 'refresh', 'token', 'jwt_access', 'jwt_refresh'].forEach((key) => {
+            localStorage.removeItem(key);
+            sessionStorage.removeItem(key);
+          });
+
+          window.location.href = '/';
+        });
+      }
+    </script>
+  </body>
+</html>

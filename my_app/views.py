@@ -6,7 +6,8 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .models import LeaveRequest, LeaveStatus, Survey
 
 class EmployeeListCreateAPIView(generics.ListCreateAPIView):
     queryset = Employee.objects.all()
@@ -110,7 +111,7 @@ class home(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        return render(request, 'genmanagerhr.html')
+        return redirect('/genmanagerdash/')
     
 
 
@@ -122,4 +123,32 @@ def branch_hr_dashboard(request):
 def employee_dashboard(request):
     return render(request, "employeedash.html")
     
+
+def genmanagerdash(request):
+    """Render the General Manager HR dashboard with basic aggregated metrics.
+
+    Uses available models to compute sensible defaults. Where domain-specific
+    metrics are not present, placeholders are provided so the template can
+    safely render.
+    """
+    total_employees = Employee.objects.count()
+    open_issues = LeaveRequest.objects.filter(status=LeaveStatus.PENDING).count()
+    total_branches = Branch.objects.count()
+    active_surveys = Survey.objects.filter(status='ACTIVE').count()
+
+    context = {
+        'total_employees': total_employees,
+        'open_issues': open_issues,
+        'escalated_to_executive': 12,
+        'hrbp_response_velocity': '42.5',
+        'engagement_index': 89,
+        'systemic_flags': 2,
+        'total_branches': total_branches,
+        'active_surveys': active_surveys,
+        # Donut breakdown (percent integers)
+        'grievance_breakdown': [50, 30, 20],
+    }
+
+    return render(request, 'genmanagerdash.html', context)
+
 

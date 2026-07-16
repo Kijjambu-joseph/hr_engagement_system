@@ -7,7 +7,7 @@ SimpleJWT instead of model classes that do not exist.
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -128,4 +128,4 @@ class RefreshTokenAPIView(APIView):
         return Response({'access': str(refresh.access_token)})
 
 def home(request):
-    return render(request, 'genmanagerhr.html')
+    return redirect('/genmanagerdash/')

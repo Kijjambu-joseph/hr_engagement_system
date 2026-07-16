@@ -10,6 +10,7 @@ from .views import (
     DepartmentDetailAPIView,
     DepartmentEmployeesAPIView,
     branch_hr_dashboard,
+    genmanagerdash,
 )
 
 urlpatterns = [
@@ -64,6 +65,7 @@ urlpatterns = [
 ),
 
     path("branchhrmanager/", branch_hr_dashboard, name="branch_hr_manager"),
+    path("genmanagerdash/", genmanagerdash, name="genmanagerdash"),
 
 
 ]
