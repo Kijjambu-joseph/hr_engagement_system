@@ -3,6 +3,8 @@ from django.contrib import admin
 from .models import BankUser
 from my_app.admin_site import hr_admin_site
 
+from django.contrib.auth.models import Group
+
 
 @admin.register(BankUser, site=hr_admin_site)
 class BankUserAdmin(admin.ModelAdmin):
@@ -30,3 +32,10 @@ class BankUserAdmin(admin.ModelAdmin):
 	)
 	readonly_fields = ('date_joined', 'last_login')
 	filter_horizontal = ('groups', 'user_permissions')
+
+
+	@admin.register(Group, site=hr_admin_site)
+	class GroupAdmin(admin.ModelAdmin):
+		list_display = ('name',)
+		search_fields = ('name',)
+		filter_horizontal = ('permissions',)

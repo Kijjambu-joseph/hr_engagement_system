@@ -151,10 +151,10 @@ JAZZMIN_SETTINGS = {
     'user_avatar': None,
     'topmenu_links': [
         {'name': 'Dashboard', 'url': 'admin:index', 'permissions': ['auth.view_user']},
-        {'name': 'Visit App Home', 'url': 'home', 'new_window': False},
+        {'name': 'Visit App Home', 'url': '/login', 'new_window': False},
     ],
     'usermenu_links': [
-        {'name': 'View Site', 'url': 'home', 'new_window': False},
+        {'name': 'View Site', 'url': '/login', 'new_window': False},
         {'model': 'users.bankuser'},
     ],
     'show_sidebar': True,
