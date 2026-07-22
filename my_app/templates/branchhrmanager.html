@@ -25,17 +25,23 @@
         min-height: 100vh;
         width: 15vw;
         background: #236CB5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
 
       .sidebar a {
         display: flex;
         align-items: center;
-        gap: 20px;
+        justify-content: center;
+        gap: 12px;
         color: white;
         text-decoration: none;
         padding: 14px 20px;
         transition: 0.3s;
         font-size: 18px;
+        width: 100%;
+        text-align: center;
       }
 
       .sidebar a i {
@@ -183,94 +189,142 @@
             color:#fff;
         }
 
-        .navbar-brand{
-          color: white;
-        }
-
-        .navbar-actions{
+        .navbar .container-fluid{
             display:flex;
             align-items:center;
+            justify-content:flex-start;
             gap:1rem;
         }
 
-        .notification-btn{
-            color:#fff;
-            border:0;
-            background:transparent;
-            position:relative;
-            font-size:1.35rem;
-            line-height:1;
-            padding:0;
-        }
-
-        .notification-btn:hover,
-        .notification-btn:focus{
-            color:#e9f2ff;
-        }
-
-        .avatar-toggle{
-            border:0;
-            background:transparent;
-            padding:0;
-        }
-
-        .avatar-placeholder{
-            width:40px;
-            height:40px;
-            border-radius:50%;
-            border:2px solid rgba(255,255,255,.8);
-            object-fit:cover;
-            background:#fff;
-        }
-
-        .dropdown-menu{
-            min-width:220px;
-        }
-
-        .navbar-actions{
-            display:flex;
-            align-items:center;
-            gap:1rem;
-        }
-
-        .notification-btn{
-            color:#fff;
-            border:0;
-            background:transparent;
-            position:relative;
-            font-size:1.35rem;
-            line-height:1;
-            padding:0;
-        }
-
-        .notification-btn:hover,
-        .notification-btn:focus{
-            color:#e9f2ff;
-        }
-
-        .avatar-toggle{
-            border:0;
-            background:transparent;
-            padding:0;
-        }
-
-        .avatar-placeholder{
-            width:40px;
-            height:40px;
-            border-radius:50%;
-            border:2px solid rgba(255,255,255,.8);
-            object-fit:cover;
-            background:#fff;
-        }
-
-        .dropdown-menu{
-            min-width:220px;
-        }
         .navbar-brand{
           color: white;
           font-weight: bold;
           font-size: 1.5rem;
-        } 
+          white-space: nowrap;
+        }
+
+        .global-search{
+          flex:1;
+          min-width:260px;
+          max-width:560px;
+          margin:0 1rem;
+        }
+
+        .global-search .input-group-text,
+        .global-search .form-control{
+          background:#ffffff;
+          border-color:rgba(255,255,255,.2);
+        }
+
+        .global-search .input-group-text{
+          color:#6b7280;
+          border-right:0;
+          border-radius:999px 0 0 999px;
+        }
+
+        .global-search .form-control{
+          border-left:0;
+          border-radius:0 999px 999px 0;
+          box-shadow:none;
+        }
+
+        .global-search .form-control:focus{
+          box-shadow:0 0 0 0.2rem rgba(255,255,255,.2);
+        }
+
+        .navbar-actions{
+            display:flex;
+            align-items:center;
+            gap:1rem;
+          margin-left:auto;
+          flex-shrink:0;
+        }
+
+        .notification-btn{
+            color:#fff;
+            border:0;
+            background:transparent;
+            position:relative;
+            font-size:1.35rem;
+            line-height:1;
+            padding:0;
+        }
+
+        .notification-btn:hover,
+        .notification-btn:focus{
+            color:#e9f2ff;
+        }
+
+        .avatar-toggle{
+            border:0;
+            background:transparent;
+            padding:0;
+        }
+
+        .avatar-placeholder{
+            width:40px;
+            height:40px;
+            border-radius:50%;
+            border:2px solid rgba(255,255,255,.8);
+            object-fit:cover;
+            background:#fff;
+        }
+
+        .dropdown-menu{
+            min-width:220px;
+        }
+
+        .navbar-actions{
+            display:flex;
+            align-items:center;
+            gap:1rem;
+        }
+
+        .notification-btn{
+            color:#fff;
+            border:0;
+            background:transparent;
+            position:relative;
+            font-size:1.35rem;
+            line-height:1;
+            padding:0;
+        }
+
+        .notification-btn:hover,
+        .notification-btn:focus{
+            color:#e9f2ff;
+        }
+
+        .avatar-toggle{
+            border:0;
+            background:transparent;
+            padding:0;
+        }
+
+        .avatar-placeholder{
+            width:40px;
+            height:40px;
+            border-radius:50%;
+            border:2px solid rgba(255,255,255,.8);
+            object-fit:cover;
+            background:#fff;
+        }
+
+        .dropdown-menu{
+            min-width:220px;
+        }
+        @media (max-width: 575px) {
+          .navbar .container-fluid{
+            flex-wrap:wrap;
+          }
+
+          .global-search{
+            order:3;
+            flex-basis:100%;
+            max-width:none;
+            margin:0;
+          }
+        }
 
     </style>
   </head>
@@ -284,6 +338,20 @@
         <span class="navbar-brand">
            HR Engagement System
         </span>
+
+        <!-- <form class="global-search" role="search">
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-search"></i>
+            </span>
+            <input
+              type="search"
+              class="form-control"
+              placeholder="Search employees, cases, submissions..."
+              aria-label="Global search"
+            />
+          </div>
+        </form> -->
 
         <div class="navbar-actions text-white">
             <button class="notification-btn" type="button" aria-label="Notifications" title="Notifications">
