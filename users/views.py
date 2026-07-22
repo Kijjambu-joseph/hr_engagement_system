@@ -37,17 +37,46 @@ class LoginAPIView(APIView):
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
+        username_or_email = serializer.validated_data['username']
+        password = serializer.validated_data['password']
+
         user = authenticate(
             request,
-            username=serializer.validated_data['username'],
-            password=serializer.validated_data['password'],
+            username=username_or_email,
+            password=password,
         )
+
+        if not user and '@' in username_or_email:
+            try:
+                user_obj = User.objects.get(email=username_or_email)
+            except User.DoesNotExist:
+                user_obj = None
+            if user_obj:
+                user = authenticate(
+                    request,
+                    username=user_obj.username,
+                    password=password,
+                )
+
         if not user:
-            return Response({'detail': 'Invalid credentials.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'error': 'Invalid credentials.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        is_employee = (
+            user.groups.filter(name='Employee').exists()
+            or user.role == 'branch_staff'
+        )
+        redirect_url = '/employeedash/' if is_employee else '/genmanagerdash/'
         refresh = RefreshToken.for_user(user)
+
         return Response({
             'refresh': str(refresh),
             'access': str(refresh.access_token),
+            'redirect_url': redirect_url,
+            'role': 'employee' if is_employee else 'regular',
         })
 
 

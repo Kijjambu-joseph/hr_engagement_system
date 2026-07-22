@@ -9,6 +9,16 @@ from rest_framework.permissions import AllowAny
 from django.shortcuts import render, redirect
 from .models import LeaveRequest, LeaveStatus, Survey
 
+from django.contrib.auth import authenticate
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.authtoken.models import Token
+
+
+
+
 class EmployeeListCreateAPIView(generics.ListCreateAPIView):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
@@ -151,4 +161,40 @@ def genmanagerdash(request):
 
     return render(request, 'genmanagerdash.html', context)
 
+     #code about login
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def login_api(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+
+    if not username or not password:
+        return Response(
+            {'error': 'Please provide both username and password.'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    user = authenticate(username=username, password=password)
+
+    if user is not None:
+        token, _ = Token.objects.get_or_create(user=user)
+        is_employee = user.groups.filter(name='Employee').exists()
+        role = 'employee' if is_employee else 'regular'
+        redirect_url = '/employeedash/' if is_employee else '/genmanagerdash/'
+
+        return Response(
+            {
+                'message': 'Login successful',
+                'token': token.key,
+                'role': role,
+                'redirect_url': redirect_url,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+    return Response(
+        {'error': 'Invalid username or password. Please try again.'},
+        status=status.HTTP_400_BAD_REQUEST,
+    )
 

@@ -112,9 +112,13 @@
 
     <main class="login-card">
         <img src="{% static 'image/cente-removebg-preview.png' %}"
-            alt="login logo" class="login-logo"
-        />
-        <form method="post" action="/api/auth/login/">
+            alt="login logo" class="login-logo"</>
+        
+            <!-- Your updated form tag with id="loginForm", action and method removed -->
+        <form id="loginForm">
+            <!-- Place an empty div here to display backend errors to the user -->
+            <div id="error-message" class="alert alert-danger d-none text-danger small mb-3" style="text-align: center;"></div>
+
             <div class="field-group">
                 <label for="username">Username</label>
                 <input id="username" name="username" type="text" placeholder="Enter your name" required />
@@ -126,8 +130,54 @@
             <a class="forgot-link" href="#">Forgot password?</a>
             <button class="login-button" type="submit">Login Now</button>
         </form>
-        <p class="login-footer">Need help? Contact your HR team for account support.</p>
-    </main>
+            <p class="login-footer">Need help? Contact your HR team for account support.</p>
+    </main> 
+
+    
+<script>
+document.getElementById('loginForm').addEventListener('submit', async (event) => {
+    event.preventDefault(); // Stop page reload
+
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const errorDiv = document.getElementById('error-message');
+    
+    errorDiv.classList.add('d-none'); // Hide error on new attempt
+
+    try {
+        const response = await fetch('/api/auth/login/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // Include Django's CSRF token if your backend requires it
+                'X-CSRFToken': '{{ csrf_token }}' 
+            },
+            body: JSON.stringify({ username, password })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            // Store the auth token in the browser's storage
+            localStorage.setItem('authToken', result.access || result.token);
+            localStorage.setItem('userRole', result.role); // Save role for dashboard checks
+
+            const redirectUrl = result.redirect_url || (result.role === 'employee' ? '/employeedash/' : '/genmanagerdash/');
+            window.location.href = redirectUrl;
+        } else {
+            // Show error message from Django
+            const errorMessage = result.error || result.detail || result.non_field_errors?.[0] || 'Invalid credentials';
+            errorDiv.textContent = errorMessage;
+            errorDiv.classList.remove('d-none');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        errorDiv.textContent = 'Server connection failed.';
+        errorDiv.classList.remove('d-none');
+    }
+});
+</script>
+
 </body>
 </html>
 

@@ -21,6 +21,7 @@ from my_app.admin_site import hr_admin_site
 from users import views as users_views
 
 
+
 def redirect_method_prefixed_api_path(request, subpath):
     """Normalize malformed URLs like 'GET /api/...' to '/api/...'."""
     return redirect(f"/api/{subpath}", permanent=False)
@@ -33,10 +34,10 @@ urlpatterns = [
     path('branchhrmanager/', branch_hr_dashboard, name='branch_hr_manager'),
     path('employeedash/', employee_dashboard, name='employee_dashboard'),
     path('genmanagerdash/', genmanagerdash, name='genmanagerdash'),
-    path("api/auth/", include("users.urls")),
-    path("api/", include("my_app.urls")),
-    path("GET /api/<path:subpath>/", redirect_method_prefixed_api_path),
-    path("GET /api/<path:subpath>", redirect_method_prefixed_api_path),
+    path('api/auth/', include('users.urls')),
+    path('api/', include('my_app.urls')),
+    path('GET /api/<path:subpath>/', redirect_method_prefixed_api_path),
+    path('GET /api/<path:subpath>', redirect_method_prefixed_api_path),
 ]
 
 

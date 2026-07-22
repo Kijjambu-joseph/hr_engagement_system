@@ -1,4 +1,5 @@
 from django.urls import path
+
 from .views import (
     EmployeeListCreateAPIView,
     EmployeeRetrieveUpdateDeleteAPIView,
@@ -11,9 +12,17 @@ from .views import (
     DepartmentEmployeesAPIView,
     branch_hr_dashboard,
     genmanagerdash,
+    login_api,
 )
 
 urlpatterns = [
+
+
+    # Match the exact action URL from your frontend fetch request
+
+    path('auth/login/', login_api, name='login_api'),
+
+
     path("employees/", EmployeeListCreateAPIView.as_view(), name="employee-list"),
     path(
         "employees/<uuid:pk>/",

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'users',
     "rest_framework",
     "rest_framework_simplejwt",
+    'rest_framework.authtoken', 
 ]
 
 MIDDLEWARE = [
@@ -67,6 +68,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
+                'django.template.context_processors.csrf',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
