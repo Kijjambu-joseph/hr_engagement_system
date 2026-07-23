@@ -47,17 +47,29 @@ class LoginAPIView(APIView):
             password=password,
         )
 
-        if not user and '@' in username_or_email:
-            try:
-                user_obj = User.objects.get(email=username_or_email)
-            except User.DoesNotExist:
-                user_obj = None
-            if user_obj:
-                user = authenticate(
-                    request,
-                    username=user_obj.username,
-                    password=password,
-                )
+        if not user:
+            if '@' in username_or_email:
+                try:
+                    user_obj = User.objects.get(email__iexact=username_or_email)
+                except User.DoesNotExist:
+                    user_obj = None
+                if user_obj:
+                    user = authenticate(
+                        request,
+                        username=user_obj.username,
+                        password=password,
+                    )
+            else:
+                try:
+                    user_obj = User.objects.get(username__iexact=username_or_email)
+                except User.DoesNotExist:
+                    user_obj = None
+                if user_obj:
+                    user = authenticate(
+                        request,
+                        username=user_obj.username,
+                        password=password,
+                    )
 
         if not user:
             return Response(
@@ -65,18 +77,37 @@ class LoginAPIView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        is_employee = (
-            user.groups.filter(name='Employee').exists()
-            or user.role == 'branch_staff'
-        )
-        redirect_url = '/employeedash/' if is_employee else '/genmanagerdash/'
+        # Determine redirect URL based on explicit role first, then groups
+        role = getattr(user, 'role', None)
+
+        if role == 'branch_staff' or user.groups.filter(name='Employee').exists():
+            redirect_url = '/employeedash/'
+            role_label = 'employee'
+        elif role == 'branch_manager' or user.groups.filter(name__iexact='Branch managers').exists():
+            redirect_url = '/branchmanager/'
+            role_label = 'branch_manager'
+        elif role in ('hrbp', 'hr_specialist') or user.groups.filter(name__iexact='HR').exists() or user.groups.filter(name__iexact='Hr').exists():
+            redirect_url = '/genmanagerdash/'
+            role_label = 'hr'
+        elif role == 'executive' or user.groups.filter(name__iexact='Executives').exists():
+            redirect_url = '/genmanagerdash/'
+            role_label = 'executive'
+        else:
+            # fallback to group-based checks or general manager dashboard
+            if user.groups.filter(name__icontains='manager').exists() or user.groups.filter(name='Managers').exists():
+                redirect_url = '/genmanagerdash/'
+                role_label = 'manager'
+            else:
+                redirect_url = '/genmanagerdash/'
+                role_label = role or 'regular'
+
         refresh = RefreshToken.for_user(user)
 
         return Response({
             'refresh': str(refresh),
             'access': str(refresh.access_token),
             'redirect_url': redirect_url,
-            'role': 'employee' if is_employee else 'regular',
+            'role': role_label,
         })
 
 

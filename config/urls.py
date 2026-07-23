@@ -32,6 +32,7 @@ urlpatterns = [
     path('admin/', hr_admin_site.urls),
     path('login/', users_views.login_page, name='login'),
     path('branchhrmanager/', branch_hr_dashboard, name='branch_hr_manager'),
+    path('branchmanager/', branch_hr_dashboard, name='branch_manager'),
     path('employeedash/', employee_dashboard, name='employee_dashboard'),
     path('genmanagerdash/', genmanagerdash, name='genmanagerdash'),
     path('api/auth/', include('users.urls')),

@@ -17,6 +17,18 @@ class BankUser(AbstractUser):
 		choices=ROLE_CHOICES, 
 		default='branch_staff'
 	)
+
+	def save(self, *args, **kwargs):
+		# Ensure raw passwords entered via admin or data import are hashed.
+		if self.password and not any(self.password.startswith(prefix) for prefix in (
+			'pbkdf2_',
+			'argon2$',
+			'bcrypt$',
+			'sha1$',
+		)):
+			self.set_password(self.password)
+		super().save(*args, **kwargs)
+
 	# Useful for HRBPs who manage multiple branches in a region
 	region_cluster = models.CharField(
 		max_length=100, 
