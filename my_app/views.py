@@ -10,6 +10,7 @@ from django.shortcuts import render, redirect
 from .models import LeaveRequest, LeaveStatus, Survey
 
 from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -130,8 +131,25 @@ def branch_hr_dashboard(request):
     return render(request, "branchhrmanager.html")
 
 
+@login_required(login_url='/login/')
 def employee_dashboard(request):
-    return render(request, "employeedash.html")
+    user = request.user
+    try:
+        profile = user.profile
+    except Exception:
+        profile = None
+
+    welcome_name = user.get_full_name().strip() or user.username
+    role_display = profile.role if profile and profile.role else getattr(user, 'role', 'Employee').replace('_', ' ').title()
+    branch_display = profile.branch if profile and profile.branch else getattr(user, 'branch_name', 'Main Branch')
+
+    context = {
+        'welcome_name': welcome_name,
+        'profile_role': role_display,
+        'profile_branch': branch_display,
+    }
+
+    return render(request, 'employeedash.html', context)
     
 
 def genmanagerdash(request):

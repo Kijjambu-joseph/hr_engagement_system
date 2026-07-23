@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import Group
 
-from .models import BankUser
+from .models import BankUser, UserProfile
 from my_app.admin_site import hr_admin_site
 
 
@@ -42,6 +42,13 @@ class BankUserAdmin(UserAdmin):
 			'fields': ('username', 'email', 'password1', 'password2', 'role', 'region_cluster', 'branch_name', 'first_name', 'last_name', 'employee_id', 'groups', 'is_staff', 'is_superuser', 'is_active'),
 		}),
 	)
+
+
+@admin.register(UserProfile, site=hr_admin_site)
+class UserProfileAdmin(admin.ModelAdmin):
+	list_display = ('user', 'role', 'branch')
+	search_fields = ('user__username', 'role', 'branch')
+	list_filter = ('role', 'branch')
 
 
 @admin.register(Group, site=hr_admin_site)
